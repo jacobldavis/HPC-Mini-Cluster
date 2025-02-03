@@ -24,4 +24,10 @@ After setting up your Raspberry Pi devices and installing the operating systems,
 
 ![ssh](images/ssh.png)
 
+At this point, your setup should look like something above, so our next step will be to configure the static IPs for the ethernet! Simply type `sudo ntmui`, `Edit a connection`, select the ethernet option, and change `IPv4 CONFIGURATION` to `Manual`. From here, you can configure your own IP address for the setup. For mine, I used 192.168.0 as the base and appended 254 for the head node and 1-2 for the compute nodes. To configure it, it should loook something like this:
 
+![nmtui](images/nmtui.png)
+
+Go ahead and follow a similar process for each of your nodes. To test if it worked, you can use the command `ping <other_ip>` to test sending data between the nodes. You can also try to connect between them using `ssh <username>@<node_cluster_LAN_IP>`. Here's the result of `ip -c a` for my head node and sending data to another node in the network:
+
+![ethernettest](images/ethernettest.png)
