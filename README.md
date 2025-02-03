@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
     MPI_Finalize();
 }
 ```
-Next, compile the program by running `mpicc -o hello hello.c`, and create a hostfile with your cluster's IP addresses, and run the code with `mpiexec -n 1 f hostfile ./hello`.
+Next, compile the program by running `mpicc -o hello hello.c`, and create a hostfile with your cluster's IP addresses, and run the code with `mpiexec -n 1 f hostfile ./hello`. If it worked, MPI is likely installed correctly!
 
 ![hellompi](images/hellompi.png)
 
