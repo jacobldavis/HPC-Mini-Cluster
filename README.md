@@ -78,8 +78,15 @@ int main(int argc, char** argv) {
     MPI_Finalize();
 }
 ```
+
 Next, compile the program by running `mpicc -o hello hello.c`, and create a hostfile with your cluster's IP addresses, and run the code with `mpiexec -n 1 f hostfile ./hello`. If it worked, MPI is likely installed correctly!
 
 ![hellompi](images/hellompi.png)
 
-Now we'll set up the compute nodes. Perform the following procedure on each compute node.
+Now we'll set up the compute nodes. Perform the following procedure on each compute node. Add the head node's IP address and hostname by running `sudo nano /etc/hosts` (in my case, it was 192.168.0.254 raspberrypi0). Next, to install MPI, run the following: `sudo apt-get update && sudo apt-get upgrade`, `sudo apt-get install libxml2-dev`, `sudo apt-get install zlib1g zlib1g-dev`, and `sudo apt-get install mpich`. You can verify the installation by running `mpiexec --version`. Next, set up the shared directory by running `sudo mkdir /home/shared_dir` and `sudo chmod 777 /home/shared_dir/`. Also, make sure that `/etc/init.d/nfs-common` and `/etc/init.d/rpcbind` have Default-Start: 2 3 4 5 set. Then, run the following: `sudo update-rc.d -f rpcbind remove`, `sudo update-rc.d rpcbind defaults`, `sudo update-rc.d -f nfs-common remove`, and `sudo update-rc.d nfs-common defaults`. To mount the shared directory to the NFS server, run `sudo mount HeadNodeIP:/home/shared_dir /home/shared_dir`, where HeadNodeIP is your head node's IP. Additionally, go ahead and run `sudo nano /etc/fstab` to add `HeadNodeIP:/home/shared_dir /home/shared_dir nfs rw,hard,intr,noauto,x-systemd.automount 0 0` so that the directory automatically boots upon reboot.
+
+Let's check to see if everything worked. On your head node, navigate to your `testprogram` directory and make sure the `hostfile` specifies the correct number of nodes and processes you want to use when running MPI. You'll want to run the command `mpiexec -n x -f hostfile ./hello`, where x = # nodes * process per node.
+
+![hellomanyworlds](images/hellomanyworlds.png)
+
+## Benchmarks!
