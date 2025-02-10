@@ -89,4 +89,6 @@ Let's check to see if everything worked. On your head node, navigate to your `te
 
 ![hellomanyworlds](images/hellomanyworlds.png)
 
+to be continued...
+
 ## Benchmarks!
