@@ -91,5 +91,8 @@ Let's check to see if everything worked. On your head node, navigate to your `te
 
 ## Benchmarks!
 
-to be continued...
+Now, let's move on to benchmarking. At this point in the guide, I added a fourth raspberry pi to my cluster, so my setup may look different. First, we'll install Supercomputer PACKage Manage (Spack). In your head node, run `git clone https://github.com/spack/spack.git` in the shared_dir directory and enter the newly created spack directory. Next, navigate to the `spack/share/spack` directory and run `. setup-env.sh`. Then, for each node (including the compute nodes), to start the environment each time you reboot, add `source /home/shared_dir/spack/share/spack/setup-env.sh` to your `.bashrc` file, and go ahead and run `source ~/.bashrc`. Verify spack is running by running `spack --version`.
 
+![spackinstall](images/spackinstall.png)
+
+Now, use spack to install hpl+openmp by running `spack install hpl+openmp` in your head node.
