@@ -91,8 +91,52 @@ Let's check to see if everything worked. On your head node, navigate to your `te
 
 ## Benchmarks!
 
-Now, let's move on to benchmarking. At this point in the guide, I added a fourth raspberry pi to my cluster, so my setup may look different. First, we'll install Supercomputer PACKage Manage (Spack). In your head node, run `git clone https://github.com/spack/spack.git` in the shared_dir directory and enter the newly created spack directory. Next, navigate to the `spack/share/spack` directory and run `. setup-env.sh`. Then, for each node (including the compute nodes), to start the environment each time you reboot, add `source /home/shared_dir/spack/share/spack/setup-env.sh` to your `.bashrc` file, and go ahead and run `source ~/.bashrc`. Verify spack is running by running `spack --version`.
+Now, let's move on to benchmarking. At this point in the guide, I added a fourth raspberry pi to my cluster, so my setup may look different. First, we'll install Supercomputer PACKage Manage (Spack). In your head node, run `git clone https://github.com/spack/spack.git` in the shared_dir directory and enter the newly created spack directory. Next, navigate to the `spack/share/spack` directory and run `. setup-env.sh`. Then, for each node (including the compute nodes), to start the environment each time you reboot, add `source /home/shared_dir/spack/share/spack/setup-env.sh` to your `.bashrc` file, and go ahead and run `source ~/.bashrc`. Verify spack is running by running `spack --version`. You can change your spack version with `git checkout v<version_number>`.
 
 ![spackinstall](images/spackinstall.png)
 
-Now, use spack to install hpl+openmp by running `spack install hpl+openmp` in your head node.
+Now, use spack to install hpl+openmp by running `spack install hpl+openmp` in your head node. I initially ran into an error where it would take too long to install openblas, so you may have to install that separately, but overall it should take around thirty minutes. Verify the installation by running `spack find -v hpl`. Next, run `spack install pmix` to install MPIx (Process Management Interface), and verify its installation with `spack find -v pmix`. Next, I ran the following commands to start a PMIx server: `export PATH="/home/shared_dir/spack/opt/spack/linux-debian12-aarch64/gcc-12.2.0/bin:$PATH"` and `export PATH="/home/shared_dir/spack/opt/spack/linux-debian12-aarch64/gcc-12.2.0/openmpi-5.0.5-k5blxd7isreqddpejrpul2svexxmhbd3/bin:$PATH"`. You may have to modify these based on the versions of gcc/openmpi that you have and other issues. You can verify that the server is running with `ps -ef | grep pmix`, and if it worked, add those two commands to /.bashrc to launch the PMIx server on startup. Now, run `find / -name “xhpl” 2>/dev/null` to find the path to the LINPACK benchmarks. I recommend creating a script to cd into this directory efficiently (my path was `/home/shared_dir/spack/opt/spack/linux-debian12-aarch64/gcc-12.2.0/hpl-2.3-vf52csiunlnpoiwtee7o2dc22hjydpub/bin`). Finally, create a hostfile with your IP configuration and .env file with paths to your hostfile, xhpl, and HPL.dat.
+
+![xhplsetup](images/xhplsetup.png)
+
+To start, we'll run one process on one node. Modify the Ns to a size that one processor could handle (I tried 5400), and set the Ps and Qs to values that multiply to your desired processes (set each to one so that we can have a 1x1 grid). Then, you can execute the benchmark with `mpiexec -n 1 ./xhpl`.
+
+![oneprocessonenodehpldat](images/oneprocessonenodehpldat.png)
+![oneprocessonenodetest](images/oneprocessonenodetest.png)
+
+Next, let's run four processes on one node. Modify Ns to a size your processor can handle (I tried 8000) and change the Ps and Qs to values that multiply up to your desired number of total processes (I chose 2 and 2 to make the grid as square as possible). Execute the benchmark with `mpiexec -n 4 ./xhpl`.
+
+![fourprocessesonenodetest](images/fourprocessesonenodetest.png)
+
+Now, let's run one process on four nodes. We can keep the Ns, Ps, and Qs around what you had for the four processes on one node. Now, let's create a helper script to run Linpack across each node in the cluster. Add the following code to the script and make sure to add executing priviledges to the script. Then, run `mpiexec -n 4 -hostfile hostfile ./xhpl_runscript` (where -n # is the number of processes corresponding to your Ps x Qs grid size).
+
+```
+#!/bin/bash
+source .env
+case ${OMPI_COMM_WORLD_LOCAL_RANK} in
+[0])
+  HOST=$(sed -n '1p' ${HOSTFILE_A100})
+  ;;
+[1])
+  HOST=$(sed -n '2p' ${HOSTFILE_A100})
+  ;;
+[2])
+  HOST=$(sed -n '3p' ${HOSTFILE_A100})
+  ;;
+[3])
+  HOST=$(sed -n '4p' ${HOSTFILE_A100})
+  ;;
+esac
+echo "Process ${OMPI_COMM_WORLD_LOCAL_RANK} started on ${HOST}"
+${XHPL} ${DAT}
+```
+
+![oneprocessfournodestest](images/oneprocessfournodestest.png)
+
+Finally, we'll run four processes on four nodes. Add NUM_RANKS_A100=4 to your .env file, modify the Ns (I set it to around 17000), and set the Ps and Qs to something else (I tried both at 3 and 4). You can then run the full cluster benchmark with `mpiexec -n 9 -hostfile hostfile ./xhpl_runscript`(where -n # is the number of processes corresponding to your Ps x Qs grid size).
+
+![fournodesrunone](images/fournodesrunone.png)
+
+## Experimentation
+
+That's it for the main guide! In this section, I'll share some of my thoughts and findings throughout the rest of the project.
