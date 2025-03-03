@@ -133,7 +133,7 @@ ${XHPL} ${DAT}
 
 ![oneprocessfournodestest](images/oneprocessfournodestest.png)
 
-Finally, we'll run four processes on four nodes. Add NUM_RANKS_A100=4 to your .env file, modify the Ns (I set it to around 17000), and set the Ps and Qs to something else (I tried both at 3 and 4). You can then run the full cluster benchmark with `mpiexec -n 9 -hostfile hostfile ./xhpl_runscript`(where -n # is the number of processes corresponding to your Ps x Qs grid size).
+Finally, we'll run multiple processes on four nodes. Add NUM_RANKS_A100=4 to your .env file, modify the Ns (I set it to around 12000 to start), and set the Ps and Qs to something else (I tried both at 3 and 4). You can then run the full cluster benchmark with `mpiexec -n 9 -hostfile hostfile ./xhpl_runscript`(where -n # is the number of processes corresponding to your Ps x Qs grid size).
 
 ![fournodesrunone](images/fournodesrunone.png)
 
