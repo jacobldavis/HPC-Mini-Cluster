@@ -138,3 +138,22 @@ Finally, we'll run multiple processes on four nodes. Add NUM_RANKS_A100=4 to you
 ## Experimentation
 
 That's it for the main guide! In this section, I'll share some of my thoughts and findings throughout the rest of the project.
+
+First, when we plot gflops vs the number of processes while keeping the problem size static, notice how the gflops increase to a certain extent and drop-off after so many processes. This is caused by a multitude of factors, including increased communication overhead across and within nodes.
+
+![5000](images/5000.png)
+
+Keeping the processes the same and increasing N, the Gflops increase to a certain point until the problem size is too much to handle for the processors.
+
+![16](images/16.png)
+
+<!-- 
+WIFI
+10.121.17.104
+10.121.18.93
+10.121.38.109
+10.121.12.83
+
+ETHERNET
+192.168.0.254/1/2/3
+-->
