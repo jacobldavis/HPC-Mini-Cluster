@@ -147,6 +147,10 @@ Keeping the processes the same and increasing N, the Gflops increase to a certai
 
 ![16](images/16.png)
 
+Here's the best run that I've gotten so far. I've been getting undervoltage errors on one of my nodes, so I likely need to troubleshoot that to get higher.
+
+![currPr](images/currPr.png)
+
 <!-- 
 WIFI
 10.121.17.104
