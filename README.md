@@ -97,7 +97,7 @@ Now, use spack to install hpl+openmp by running `spack install hpl+openmp` in yo
 
 ![xhplsetup](images/xhplsetup.png)
 
-To start, we'll run one process on one node. Modify the Ns to a size that one processor could handle (I tried 5400), and set the Ps and Qs to values that multiply to your desired processes (set each to one so that we can have a 1x1 grid). Then, you can execute the benchmark with `mpiexec -n 1 ./xhpl`.
+To start, we'll run one process on one node. Modify the Ns to a size that one processor could handle (N represents the problem size; I tried 5400 to start), and set the Ps and Qs to values that multiply to your desired processes (P and Q represent the number of process rows and columns). Then, you can execute the benchmark with `mpiexec -n 1 ./xhpl`.
 
 ![oneprocessonenodehpldat](images/oneprocessonenodehpldat.png)
 ![oneprocessonenodetest](images/oneprocessonenodetest.png)
