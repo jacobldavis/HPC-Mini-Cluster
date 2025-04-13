@@ -147,7 +147,7 @@ Keeping the processes the same and increasing N, the Gflops increase to a certai
 
 ![16](images/16.png)
 
-Here's the best run that I've gotten so far. I used a 3 x 4 setup to reserve some resources for OS processes in the nodes. I've been getting undervoltage errors on one of my nodes, so I need to troubleshoot that to get higher.
+Here's the best run that I've gotten so far. I used a 3 x 4 setup to reserve some resources for OS processes in the nodes.
 
 ![currPr](images/currPr.png)
 
