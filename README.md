@@ -1,6 +1,6 @@
 # HPC-Mini-Cluster
 
-Welcome! The following is my procedure for setting up an HPC Mini-Cluster made up of Raspberry Pi devices for ECE 4990. The goal of this project is to learn about HPC and prepare for SC25!
+Welcome! The following is my procedure for setting up an HPC Mini-Cluster made up of Raspberry Pi devices. The goal of this project is to learn about HPC and prepare for SC25!
 
 ## Getting Started
 
