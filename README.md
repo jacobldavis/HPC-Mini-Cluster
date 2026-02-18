@@ -22,7 +22,7 @@ After setting up your Raspberry Pi devices and installing the operating systems,
 
 ![ssh](images/ssh.png)
 
-At this point, your setup should look like something above, so our next step will be to configure the static IPs for the ethernet! Simply type `sudo ntmui`, `Edit a connection`, select the ethernet option, and change `IPv4 CONFIGURATION` to `Manual`. From here, you can configure your own IP address for the setup. For mine, I used 192.168.0 as the base and appended 254/24 for the head node and 1-2/24 for the compute nodes. To configure it, it should look something like this:
+At this point, your setup should look like something above, so our next step will be to configure the static IPs for the ethernet! Simply type `sudo nmtui`, `Edit a connection`, select the ethernet option, and change `IPv4 CONFIGURATION` to `Manual`. From here, you can configure your own IP address for the setup. For mine, I used 192.168.0 as the base and appended 254/24 for the head node and 1-2/24 for the compute nodes. To configure it, it should look something like this:
 
 ![nmtui](images/nmtui.png)
 
@@ -44,7 +44,7 @@ Next, run `sudo service rpcbind start` and `sudo apt-get install nfs-kernel-serv
 
 ![need](images/need.png)
 
-Also run `sudo cat /etc/idmap.conf` to check that nobody and nogroup are configured for Nobody-User and Nobody-Group. Next, run `sudo nano /etc/exports` and add a line with `/home/shared_dir SubnetAddress(rw,nohide,insecure,no_subtree_check,async)`, where SubnetAddress is your network's subnet address. You can use this [tool](https://cidr.xyz/) to confirm your SubnetAddress (for my example I inputted 192.168.0.254/24). This part allows for read and write access for the shared directory for any address within the subnet.
+Also run `sudo cat /etc/ipmapd.conf` to check that nobody and nogroup are configured for Nobody-User and Nobody-Group. Next, run `sudo nano /etc/exports` and add a line with `/home/shared_dir SubnetAddress(rw,nohide,insecure,no_subtree_check,async)`, where SubnetAddress is your network's subnet address. You can use this [tool](https://cidr.xyz/) to confirm your SubnetAddress (for my example I inputted 192.168.0.254/24). This part allows for read and write access for the shared directory for any address within the subnet.
 
 ![rw](images/rw.png)
 
@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
 }
 ```
 
-Next, compile the program by running `mpicc -o hello hello.c`, and create a hostfile with your cluster's IP addresses, and run the code with `mpiexec -n 1 f hostfile ./hello`. If it worked, MPI is likely installed correctly! Check out this [page](https://rookiehpc.org/) to learn more about MPI and OpenMP.
+Next, compile the program by running `mpicc -o hello hello.c`, and create a hostfile with your cluster's IP addresses, and run the code with `mpiexec -n 1 -f hostfile ./hello`. If it worked, MPI is likely installed correctly! Check out this [page](https://rookiehpc.org/) to learn more about MPI and OpenMP.
 
 ![hellompi](images/hellompi.png)
 
