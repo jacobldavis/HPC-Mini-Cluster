@@ -10,7 +10,7 @@ Then, begin cabling everything up. Make sure to plug in the power supply and net
 
 ## SD Card Setup
 
-To install the operating system, install the following [tool](https://www.raspberrypi.com/software/). Insert your microSD card into your computer (using an adapter or the microSD card slot) and open the Raspberry Pi Imager. In the GUI, select the version of Raspberry Pi you are using (in my case it was Raspberry Pi 4), click Raspberry Pi OS (other) to select Raspberry Pi OS Lite (64 bit) for our OS, and finally select the SD card that you are using. After clicking Next, you'll want to select Edit Settings to create a hostname (a human-readable name for the device on the network, like a nametag), username, password, and enable ssh under the services tab for your OS. I also recommend setting up your Wi-Fi connection in the OS during this step. Finally, apply the settings you just configured and install the OS onto the SD card.
+To install the operating system, install the following [tool](https://www.raspberrypi.com/software/). Insert your microSD card into your computer (using an adapter or the microSD card slot) and open the Raspberry Pi Imager. In the GUI, select the version of Raspberry Pi you are using (in my case it was Raspberry Pi 4), click Raspberry Pi OS (other) to select Raspberry Pi OS Lite (64 bit) for our OS, and finally select the SD card that you are using. After clicking Next, you'll want to select Edit Settings to create a hostname (a nametag for the device on the network), username, password, and enable ssh under the services tab for your OS. I also recommend setting up your Wi-Fi connection in the OS during this step. Finally, apply the settings you just configured and install the OS onto the SD card.
 
 ![raspberry pi imager](images/raspberryimager.png)
 
@@ -38,7 +38,7 @@ Finally, we'll set it up to where your nodes can connect to each other without p
 
 A quick note on terminology: the **head node** is the "boss" machine that coordinates everything, while **compute nodes** are the worker machines that perform computation. It's like having a head chef in a kitchen versus the line cooks that follow the head chef's orders.
 
-Let's set up the head node first. On your head node, run the commands `sudo apt-get update` (fetches the latest list of available software) and `sudo apt-get upgrade` ( installs those updates). Then, run `sudo nano /etc/modules` (`nano` is a simple terminal text editor) and append "i2c-dev" and "ipv6" to the file as shown below.
+Let's set up the head node first. On your head node, run the commands `sudo apt-get update` (fetches the latest list of available software) and `sudo apt-get upgrade` (installs those updates). Then, run `sudo nano /etc/modules` (`nano` is a simple terminal text editor) and append "i2c-dev" and "ipv6" to the file as shown below.
 
 ![etcmodules](images/etcmodules.png)
 
